@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./qiangguo.json"></script>
+    <title>忽略符号搜索</title>
+    <script>
+        var regUnSyb = /[^\u4e00-\u9fa5a-zA-Z0-9]+/g; //匹配中英文字
+
+        function EnterPress(e) { //传入 event
+            var e = e || window.event;
+            if (e.keyCode == 13) {
+                document.getElementById("searchBtn").click();
+            }
+        }
+
+        function search(text) {
+            value = document.getElementById('input').value.replace(regUnSyb, "\\W*?");
+            if (value == '') {
+                return false
+            }
+            var re = new RegExp(value, "g"); //将符号都转为“\W*”，并转为正则表达式
+            var res = text.ques.match(re);
+            return res;
+        }
+
+        function myOne() {
+            arr_ans = text.filter(search);
+            var rootList = document.createElement('ol');
+            for (x = 0; x < arr_ans.length; x++) {
+                item = document.createElement('li')
+
+                tn = document.createTextNode(arr_ans[x].ques)
+                an = document.createTextNode(arr_ans[x].con)
+
+                item.appendChild(tn)
+                item.appendChild(an)
+                item.setAttribute("class", "list-group-item panel-body")
+                rootList.setAttribute("class", "list-group ")
+                rootList.appendChild(item)
+            }
+            document.body.replaceChild(rootList, document.body.childNodes[document.body.childNodes.length - 1])
+        }
+    </script>
+</head>
+
+<body class="container">
+    <div class="row">
+        <label>输入：</label>
+        <input type="text" id="input" class=" form-control " onkeypress="EnterPress(event)">
+        <button id="searchBtn" onclick="myOne() " class="btn btn-default col-sm-6 col-sm-offset-3">
+        搜索
+    </button>
+    </div>
+</body>
+
+</html>
