@@ -37,17 +37,25 @@
 
         function myOne() {
             arr_ans = text.filter(search);
-            var rootList = document.createElement('ol');
+            var rootList = document.createElement('div');
             for (x = 0; x < arr_ans.length; x++) {
-                item = document.createElement('li')
-
-                tn = document.createTextNode(arr_ans[x].ques)
-                an = document.createTextNode(arr_ans[x].con)
-
-                item.appendChild(tn)
-                item.appendChild(an)
-                item.setAttribute("class", "list-group-item panel-body")
-                rootList.setAttribute("class", "list-group ")
+                ans_list = eval(arr_ans[x].anss)
+                ques = arr_ans[x].ques
+                con = arr_ans[x].con - 1
+                ans = ans_list[con]
+                item = document.createElement('div')
+                item_head = document.createElement('div')
+                item_body = document.createElement('div')
+                item_text = document.createTextNode(ans)
+                item_ques = document.createTextNode(ques)
+                item_head.appendChild(item_ques)
+                item_head.setAttribute('class', 'panel-heading')
+                item_body.appendChild(item_text)
+                item_body.setAttribute('class', 'panel-body')
+                ques = document.createTextNode(arr_ans[x].ques)
+                item.appendChild(item_head)
+                item.appendChild(item_body)
+                item.setAttribute("class", "panel panel-default")
                 rootList.appendChild(item)
             }
             document.body.replaceChild(rootList, document.body.childNodes[document.body.childNodes.length - 1])
