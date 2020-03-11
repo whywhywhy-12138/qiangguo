@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>强国在线搜</title>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <style>
+        .answer {
+            background: gainsboro;
+        }
+    </style>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body class="container">
+    <div id="box">
+        <h1>强国在线搜</h1>
+        <input class="form-control" type="text" v-model='in_data'>
+        <hr>
+        <div v-for="x in arr_ques" class="panel panel-default">
+            <div class="panel-heading">{{x.ques}}</div>
+            <div class="panel-body list-group-item" v-bind:class="{'answer':i==x.answer-1}" v-for='(y,,i) in eval(x.items)'>{{y}}</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.onload = function() {
+            var vm = new Vue({
+                el: '#box',
+                data: {
+                    in_data: '',
+                    arr_ques: []
+                },
+                watch: {
+                    in_data: function(in_data) {
+                        this.$http.get("http://39.106.64.115/qianguo_php/search.php", {
+                            params: {
+                                q: in_data
+                            }
+                        }).then(function(res) {
+                            this.arr_ques = res.body
+                        }, function() {
+                            console.log("请求失败");
+                        })
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
